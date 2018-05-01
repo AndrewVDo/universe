@@ -1,3 +1,4 @@
+#pragma once
 class Planet {
 private:
     double dx, dy;

@@ -1,31 +1,24 @@
 #include "universe.h"
+#include "planet.h"
+#include "draw.h"
 #include <iostream>
 #include <iomanip>
-#include <SFML/Graphics.hpp>
 
 using namespace std;
 
 int main(void) {
-		universe* solar_system = new universe(1000, 1000);
+	
 
-		solar_system->createPlanet(0, 0, 0, 0, 100, 1);
-		solar_system->createPlanet(-0.0001, -0.0001, 5, 5, 1, 1);
-		solar_system->createPlanet(-0.0001, -0.0001, 10, 10, 10, 1);
 
-		for(int i = 0; i < 10000000; i++){
-			solar_system->updateUniverse();
-			double x0 = solar_system->planetList[0]->getPosX();
-			double y0 = solar_system->planetList[0]->getPosY();
+		universe* solar_system = new universe(100, 100);
 
-			double x1 = solar_system->planetList[1]->getPosX();
-			double y1 = solar_system->planetList[1]->getPosY();
+		solar_system->createPlanet(0, 0, 0, 0, 2000000, 25);
+		solar_system->createPlanet(0, .05, 200, 0, 1000, 10);
+		solar_system->createPlanet(0, .05, -300, 0, 2000, 10);
+		solar_system->createPlanet(-.015, -.007, 400, 400, 100, 5);
+		solar_system->createPlanet(.001, 0, -500, 100, 100, 5);
 
-			double x2 = solar_system->planetList[2]->getPosX();
-			double y2 = solar_system->planetList[2]->getPosY();
-
-			cout << fixed << setprecision(1) << "P0-X: " << x0 << "\tY: " << y0 << "\t" << "//P1-X: " << x1 << "\tY:" << y1 << "\tP2-X: " << x2 << "\tY: " << y2 <<"\n";
-
-		}
+		drawScreen(1200, 780, solar_system);
 
 		delete solar_system;
 

@@ -89,13 +89,12 @@ void Planet::updateVel(Planet *p) {
 	//else if(xDist < 0 && yDist > 0) direction = -atan2(yDist, xDist);
 	//else direction = 1 + atan2(yDist, xDist);
 	double accel = 0;
-		if(distance2 > 1)accel = -6.67 * pow(10,-7) * p->getMass() / distance2; //REPLACE 1.0 WITH G FOR LATER BUILDS
+		if(distance2 > 1)accel = -6.67 * pow(10,-7) * p->getMass() / distance2;
 	this->dx += cos(direction) * accel;
 	this->dy += sin(direction) * accel;
     return;
 }
 void Planet::updatePos(){
-	//printf("x: %f, dx: %f, y: %f, dy: %f\n", this->x, this->dx, this->y, this->dy);
     this->x += this->dx;
     this->y += this->dy;
     return;
