@@ -1,3 +1,11 @@
+/*
+
+	planet.cpp
+	Author: Andrew Do
+	This source file info related to a planet, it also contains methods that model
+	gravitational interactions between two planet class objects
+
+*/
 #include<cmath>
 #include<stdio.h>
 #include <SFML/Graphics.hpp>
@@ -5,32 +13,48 @@ using namespace std;
 
 class Planet {
 private:
-    double dx, dy;
-    double x, y;
-    double mass;
-    double radius;
+	double dx, dy;
+	double x, y;
+	double mass;
+	double radius;
 	sf::Color planetColor;
 
 public:
-    Planet();
-    Planet(double xSpeed, double ySpeed, double xPos, double yPos, double planetMass, double planetRadius, sf::Color pColor);
+	//Default Constructor for Planet, set mass and radius to 1.0, location and speed to 0.0
+	Planet();
+	//Non-Default Constructor for Planet, set (xSpeed, ySpeed, xPos, yPos, planetMass, planetRadius, planetColor)
+	Planet(double xSpeed, double ySpeed, double xPos, double yPos, double planetMass, double planetRadius, sf::Color pColor);
 
-    void changePos(double xLoc, double yLoc);
-    void changeVel(double xSpeed, double ySpeed);
-    void changeMass(double planetMass);
-    void changeRad(double planetRadius);
+	//Change position of Planet (xPos, yPos)
+	void changePos(double xLoc, double yLoc);
+	//Change Velocity of Planet (xSpeed, ySpeed)
+	void changeVel(double xSpeed, double ySpeed);
+	//ChangeMass of Planet
+	void changeMass(double planetMass);
+	//Change Radius of Planet
+	void changeRad(double planetRadius);
+	//Change Color of Planet
 	void changeColor(sf::Color pColor);
 
-    double getPosX()const;
-    double getPosY()const;
-    double getVelX()const;
-    double getVelY()const;
-    double getMass()const;
-    double getRad()const;
+	//Get X Position of planet
+	double getPosX()const;
+	//Get Y position of planet
+	double getPosY()const;
+	//get X velocity of planet
+	double getVelX()const;
+	//get Y velocity of planet
+	double getVelY()const;
+	//get mass of planet
+	double getMass()const;
+	//get radius of planet
+	double getRad()const;
+	//get color of planet
 	sf::Color getColor()const;
 
-    Planet* updateVel(Planet* p);
-    void updatePos();
+	//apply gravitational acceleration and change velocity of planet
+	Planet* updateVel(Planet* p);
+	//update position of planet in accordance to acceleration
+	void updatePos();
 
 };
 

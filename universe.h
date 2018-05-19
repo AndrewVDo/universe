@@ -1,5 +1,5 @@
 #pragma once
-#include<vector>
+#include <vector>
 #include "planet.h"
 
 
@@ -7,8 +7,12 @@ class universe {
 private:
 	double width, height;
 	std::vector<Planet*> planetList;
+	bool paused;
+	bool showAxis;
 	float scrollX, scrollY;
 	float zoom;
+	sf::RectangleShape xAxis;
+	sf::RectangleShape yAxis;
 public:
 	universe();
 	universe(double w, double h);
