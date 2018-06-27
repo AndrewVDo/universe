@@ -1,202 +1,205 @@
-/*
-
-	planet.cpp
-	Author: Andrew Do
-	This source file info related to a planet, it also contains methods that model
-	gravitational interactions between two planet class objects
-
-*/
 #include<cmath>
 #include<stdio.h>
 #include <SFML/Graphics.hpp>
+#include <universe.h>
 using namespace std;
 
-class Planet {
-private:
-	double dx, dy;
-	double x, y;
-	double mass;
-	double radius;
-	sf::Color planetColor;
+class Celestial_Body {
+protected:
+	float x, y,
+		dx, dy,
+		fx, fy,
+		mass, radius;
+	sf::Color body_color;
 
 public:
-	//Default Constructor for Planet, set mass and radius to 1.0, location and speed to 0.0
-	Planet();
-	//Non-Default Constructor for Planet, set (xSpeed, ySpeed, xPos, yPos, planetMass, planetRadius, planetColor)
-	Planet(double xSpeed, double ySpeed, double xPos, double yPos, double planetMass, double planetRadius, sf::Color pColor);
+	Celestial_Body();
+	Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);
 
-	//Change position of Planet (xPos, yPos)
-	void changePos(double xLoc, double yLoc);
-	//Change Velocity of Planet (xSpeed, ySpeed)
-	void changeVel(double xSpeed, double ySpeed);
-	//ChangeMass of Planet
-	void changeMass(double planetMass);
-	//Change Radius of Planet
-	void changeRad(double planetRadius);
-	//Change Color of Planet
-	void changeColor(sf::Color pColor);
+	void change_position(float x, float y);
+	void change_velocity(float x, float y);
+	void change_mass(float mass);
+	void change_radius(float radius);
+	void change_color(sf::Color planetColor);
 
-	//Get X Position of planet
-	double getPosX()const;
-	//Get Y position of planet
-	double getPosY()const;
-	//get X velocity of planet
-	double getVelX()const;
-	//get Y velocity of planet
-	double getVelY()const;
-	//get mass of planet
-	double getMass()const;
-	//get radius of planet
-	double getRad()const;
-	//get color of planet
-	sf::Color getColor()const;
+	float get_position_x()const;
+	float get_position_y()const;
+	float get_velocity_x()const;
+	float get_velocity_y()const;
+	float get_mass()const;
+	float get_radius()const;
+	sf::Color get_color()const;
 
-	//apply gravitational acceleration and change velocity of planet
-	Planet* updateVel(Planet* p);
-	//update position of planet in accordance to acceleration
-	void updatePos();
+	void clear_force();
+	Celestial_Body* update_force(Celestial_Body* p);
+	void update_velocity();
+	void update_position();
 
 };
 
-Planet::Planet(){
+class Planet : protected Celestial_Body {
+public:
+	Planet();
+	Planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);
+	void draw_planet();
 
-    this->dx = 0;
-    this->dy = 0;
+};
+
+class Asteroid : protected Celestial_Body {
+public:
+	Asteroid();
+	Asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);
+	void draw_asteroid();
+
+};
+
+Celestial_Body::Celestial_Body(){
+
     this->x = 0;
     this->y = 0;
+    this->dx = 0;
+    this->dy = 0;
+	this->fx = 0;
+	this->fy = 0;
     this->mass = 1;
     this->radius = 1;
-	this->planetColor;
+	this->body_color;
 
 }
 
-Planet::Planet(double xSpeed, double ySpeed, double xPos, double yPos, double planetMass, double planetRadius, sf::Color pColor){
+Celestial_Body::Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color) {
 
-    this->dx = xSpeed;
-    this->dy = ySpeed;
-    this->x = xPos;
-    this->y = yPos;
-    this->mass = planetMass;
-    this->radius = planetRadius;
-	this->planetColor = pColor;
+    this->x = x;
+    this->y = y;
+    this->dx = dx;
+    this->dy = dy;
+	this->fx = 0;
+	this->fy = 0;
+    this->mass = mass;
+    this->radius = radius;
+	this->body_color = body_color;
 
 }
 
-void Planet::changePos(double xPos, double yPos){
+void Celestial_Body::change_position(float x, float y){
 
-    this->x = xPos;
-    this->y = yPos;
-
+    this->x = x;
+    this->y = y;
     return;
 
 }
 
-void Planet::changeVel(double xSpeed, double ySpeed){
+void Celestial_Body::change_velocity(float x, float y){
 
-    this->dx = xSpeed;
-    this->dy = ySpeed;
-
+    this->dx = x;
+    this->dy = y;
     return;
 
 }
 
-void Planet::changeMass(double planetMass){
+void Celestial_Body::change_mass(float mass){
 
-    this->mass = planetMass;
-
+    this->mass = mass;
     return;
 
 }
 
-void Planet::changeRad(double planetRadius){
+void Celestial_Body::change_radius(float radius){
 
-    this->radius = planetRadius;
-
+    this->radius = radius;
     return;
 
 }
 
-void Planet::changeColor(sf::Color pColor) {
+void Celestial_Body::change_color(sf::Color planet_color) {
 
-	this->planetColor = pColor;
-
+	this->body_color = planet_color;
 	return;
 
 }
 
-double Planet::getPosX()const{
+float Celestial_Body::get_position_x()const{
 
     return this->x;
 
 }
 
-double Planet::getPosY()const{
+float Celestial_Body::get_position_y()const{
 
     return this->y;
 
 }
 
-double Planet::getVelX()const{
+float Celestial_Body::get_velocity_x()const{
 
     return this->dx;
 
 }
 
-double Planet::getVelY()const{
+float Celestial_Body::get_velocity_y()const{
 
     return this->dy;
 
 }
 
-double Planet::getMass()const{
+float Celestial_Body::get_mass()const{
 
     return this->mass;
 
 }
 
-double Planet::getRad()const{
+float Celestial_Body::get_radius()const{
 
     return this->radius;
 
 }
 
-sf::Color Planet::getColor()const {
+sf::Color Celestial_Body::get_color()const {
 
-	return this->planetColor;
+	return this->body_color;
 
 }
 
-///	This function calculates the acceleration between this current planet caused
-/// by it's neighbor p and uodates this planet's current speed
-Planet* Planet::updateVel(Planet *p) {
+void Celestial_Body::clear_force() {
+	
+	this->fx = 0;
+	this->fy = 0;
+	return;
 
-	double xDist = (this->x) - (p->x);
-	double yDist = (this->y) - (p->y);
-	double distance2 = xDist * xDist + yDist * yDist;
+}
 
-	if (sqrt(distance2) < (this->getRad() + p->getRad())) {
-		return p;
-	}
+Celestial_Body* Celestial_Body::update_force(Celestial_Body *neighbor) {
+
+	float x_distance = this->x - neighbor->x;
+	float y_distance = this->y - neighbor->y;
+	float distance_squared = x_distance * x_distance + y_distance * y_distance;
+
+	if ( sqrt( distance_squared ) < (this->radius + neighbor->radius) ) return neighbor;
 	else {
-		double direction = atan2(yDist, xDist);
-		double accel = 0;
-		if (distance2 > 1)accel = -6.67 * pow(10, -11) * p->getMass() / distance2;
-		this->dx += cos(direction) * accel;
-		this->dy += sin(direction) * accel;
+		float direction = atan2f( y_distance, x_distance );
+		float force = -6.67 * pow(10, -11) * this->mass * neighbor->mass / distance_squared;
+		this->fy += sin(direction) * force;
+		this->fy += cos(direction) * force;
+		neighbor->fx += sin(direction + 3.14159265358979323846) * force;
+		neighbor->fy += cos(direction + 3.14159265358979323846) * force;
 		return NULL;
 	}
 
 }
 
-///	This function updates this current planet's position
-/// according to it's speed
-void Planet::updatePos(){
+void Celestial_Body::update_velocity() {
 
-    this->x += this->dx;
-    this->y += this->dy;
-
-    return;
+	this->dx = this->fx / this->mass;
+	this->dy = this->fy / this->mass;
+	return;
 
 }
 
+void Celestial_Body::update_position(){
+
+    this->x += this->dx;
+    this->y += this->dy;
+    return;
+
+}
 
