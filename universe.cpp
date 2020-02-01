@@ -17,6 +17,8 @@ class Celestial_Body;
 class Planet;
 class Asteroid;
 
+using namespace sf;
+
 /*Universe class consist of members which keep track of all values necessary to 
 display graphics and keep track of all the celestial bodies which lie within it.*/
 class Universe {
@@ -41,8 +43,8 @@ public:
 	Celestial_Body* get_body(int n);						//retrieve pointer to n'th celestial entity
 	int get_list_size();									//retrieve int number of celestial bodies in this universe
 
-	void create_planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);		//create planet(circle) with various parameters
-	void create_asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);		//create asteroid(triangle) with various parameters
+	void create_planet(float x, float y, float dx, float dy, float mass, float radius, Color body_color);		//create planet(circle) with various parameters
+	void create_asteroid(float x, float y, float dx, float dy, float mass, float radius, Color body_color);		//create asteroid(triangle) with various parameters
     void delete_body(int n);								//delete n'th celestial body
 
     void update_universe();									//update all physics associated with the universe
@@ -60,18 +62,18 @@ protected:
 		dx, dy,												//XY Velocity
 		fx, fy,												//XY force, this value is cleared at the beginning of each calculation
 		mass, radius;										//mass and radius of planet/asteroid
-	sf::Color body_color;									//colour of celestial entity
+	Color body_color;									//colour of celestial entity
 	int polygon_sides;										//number of sides to sfml drawing app, 3 for asteroid, 20 for planet
 
 public:
 	Celestial_Body();										//default constructor
-	Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);		//create a celestial body with various parameters
+	Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, Color body_color);		//create a celestial body with various parameters
 
 	void change_position(float x, float y);					//change position of celestial body
 	void change_velocity(float x, float y);					//change velocity of celestial body
 	void change_mass(float mass);							//change mass of celestial body
 	void change_radius(float radius);						//change radius of celestial body
-	void change_color(sf::Color planetColor);				//change colour of celestial body
+	void change_color(Color planetColor);				//change colour of celestial body
 	void change_polygon_sides(int n);						//change number of sides of object
 
 	float get_position_x()const;							//retrieve x coordinate of celestial body
@@ -80,7 +82,7 @@ public:
 	float get_velocity_y()const;							//get y velocity of celestial body
 	float get_mass()const;									//get mass of celestial body
 	float get_radius()const;								//get radius of celestial body
-	sf::Color get_color()const;								//get color of celestial body
+	Color get_color()const;								//get color of celestial body
 	int get_polygon_sides()const;
 
 	void clear_force();										//empty the force values of a celestial body, this must be done at the beginning of each iteration
@@ -96,7 +98,7 @@ produces a round object*/
 class Planet : public Celestial_Body {
 public:
 	Planet();												//default constructor
-	Planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);				//create 30 side planet with various parameters
+	Planet(float x, float y, float dx, float dy, float mass, float radius, Color body_color);				//create 30 side planet with various parameters
 };
 
 /*Asteroid class is a derivative of Celestial_Body which contains a constructor that
@@ -104,7 +106,7 @@ produces a triangular object*/
 class Asteroid : public Celestial_Body {
 public:
 	Asteroid();												//default constructor
-	Asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);				//create a 3 side asteroid with various parameters
+	Asteroid(float x, float y, float dx, float dy, float mass, float radius, Color body_color);				//create a 3 side asteroid with various parameters
 };
 
 
@@ -178,14 +180,14 @@ int Universe::get_list_size()
 	return int(this->body_list.size());
 }
 
-void Universe::create_planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color) 
+void Universe::create_planet(float x, float y, float dx, float dy, float mass, float radius, Color body_color) 
 {
 	Planet* planet = new Planet(x, y, dx, dy, mass, radius, body_color);
     this->body_list.push_back(planet);
     return;
 }
 
-void Universe::create_asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color)
+void Universe::create_asteroid(float x, float y, float dx, float dy, float mass, float radius, Color body_color)
 {
 	Asteroid* asteroid = new Asteroid(x, y, dx, dy, mass, radius, body_color);
 	this->body_list.push_back(asteroid);
@@ -272,22 +274,22 @@ as well as provides the controls for the viewing window. It also calls the updat
 to procedually generate the physics*/
 void Universe::render_universe()
 {
-	sf::RenderWindow window(sf::VideoMode(int(this->width), int(this->height)), "universe");
+	RenderWindow window(VideoMode(int(this->width), int(this->height)), "universe");
 	std::cout << "Welcome to Universe Physics Modeller!\nUse arrow keys for navigation and mouse wheel to zoom\nPress Enter/Return to create a new Planet\nPress Spacebar to pause/resume\n";
 
 	while (window.isOpen()) 
 	{
-		sf::Event event;
+		Event event;
 		while (window.pollEvent(event)) 
 		{
 			//Close Button Clicked
-			if (event.type == sf::Event::Closed)
+			if (event.type == Event::Closed)
 				window.close();
 
 			//Keyboard Key Pressed Input
-			if (event.type == sf::Event::KeyPressed)
+			if (event.type == Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Space) 
+				if (event.key.code == Keyboard::Space) 
 				{
 					if (this->paused == false) 
 					{
@@ -300,19 +302,19 @@ void Universe::render_universe()
 						std::cout << "resumed\n";
 					}
 				}
-				else if (event.key.code == sf::Keyboard::Up)
+				else if (event.key.code == Keyboard::Up)
 					this->scroll_y += 10;
-				else if (event.key.code == sf::Keyboard::Down)
+				else if (event.key.code == Keyboard::Down)
 					this->scroll_y -= 10;
-				else if (event.key.code == sf::Keyboard::Left)
+				else if (event.key.code == Keyboard::Left)
 					this->scroll_x += 10;
-				else if (event.key.code == sf::Keyboard::Right)
+				else if (event.key.code == Keyboard::Right)
 					this->scroll_x -= 10;
 
 			}
 
 			//Mouse Wheel Movement Input
-			if (event.type == sf::Event::MouseWheelMoved)
+			if (event.type == Event::MouseWheelMoved)
 			{
 				if (event.mouseWheel.delta < 0) 
 				{
@@ -329,7 +331,7 @@ void Universe::render_universe()
 
 		}
 
-		window.clear(sf::Color::Black);
+		window.clear(Color::Black);
 
 			if (paused == false)
 				this->update_universe();
@@ -338,7 +340,7 @@ void Universe::render_universe()
 
 			for (int i = 0; i < this->get_list_size(); i++) 
 			{
-				sf::CircleShape body(this->body_list[i]->get_radius() * this->zoom, this->body_list[i]->get_polygon_sides());
+				CircleShape body(this->body_list[i]->get_radius() * this->zoom, this->body_list[i]->get_polygon_sides());
 				body.setFillColor(this->get_body(i)->get_color());
 				body.setPosition( this->get_body(i)->get_position_x() * this->zoom + this->width / 2 - this->get_body(i)->get_radius() * this->zoom + this->scroll_x * this->zoom, -this->get_body(i)->get_position_y() * this->zoom + this->height / 2 - this->get_body(i)->get_radius() * this->zoom + this->scroll_y * this->zoom);
 				window.draw(body);
@@ -377,7 +379,7 @@ Celestial_Body::Celestial_Body()
 	this->polygon_sides = 4;
 }
 
-Celestial_Body::Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color) 
+Celestial_Body::Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, Color body_color) 
 {
 	this->x = x;
 	this->y = y;
@@ -417,7 +419,7 @@ void Celestial_Body::change_radius(float radius)
 	return;
 }
 
-void Celestial_Body::change_color(sf::Color planet_color) 
+void Celestial_Body::change_color(Color planet_color) 
 {
 	this->body_color = planet_color;
 	return;
@@ -459,7 +461,7 @@ float Celestial_Body::get_radius()const
 	return this->radius;
 }
 
-sf::Color Celestial_Body::get_color()const
+Color Celestial_Body::get_color()const
 {
 	return this->body_color;
 }
@@ -560,14 +562,14 @@ void Celestial_Body::make_orbit(Celestial_Body* p, bool clockwise)
 
 }
 
-Planet::Planet() : Celestial_Body(0, 0, 0, 0, 1, 1, sf::Color::White) {}
-Planet::Planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color) : Celestial_Body(x, y, dx, dy, mass, radius, body_color)
+Planet::Planet() : Celestial_Body(0, 0, 0, 0, 1, 1, Color::White) {}
+Planet::Planet(float x, float y, float dx, float dy, float mass, float radius, Color body_color) : Celestial_Body(x, y, dx, dy, mass, radius, body_color)
 {
 	this->polygon_sides = 30;
 }
 
-Asteroid::Asteroid() : Celestial_Body(0, 0, 0, 0, 1, 1, sf::Color::White) {}
-Asteroid::Asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color) : Celestial_Body(x, y, dx, dy, mass, radius, body_color)
+Asteroid::Asteroid() : Celestial_Body(0, 0, 0, 0, 1, 1, Color::White) {}
+Asteroid::Asteroid(float x, float y, float dx, float dy, float mass, float radius, Color body_color) : Celestial_Body(x, y, dx, dy, mass, radius, body_color)
 {
 	this->polygon_sides = 3;
 }
