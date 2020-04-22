@@ -18,6 +18,7 @@ This document will help you get started on developing Universe
 ### 2. Getting Started on Mac OS
     1. Create a CMake folder `mkdir cmake && cd cmake`
     2. Generate the build files `cmake -G "Ninja" ..`
+    3. Build the project binaries `ninja`
     3. Run the program from the terminal `./Universe` 
        (OSX Catalina requires security exceptions for terminal to allow SFML to run)
 
