@@ -15,17 +15,17 @@ This document will help you get started on developing Universe
     2. Download SFML & Install https://www.sfml-dev.org/download.php
     3. (Optional/Recommended) Download Ninja-Build & Install https://ninja-build.org/
 
-# 2.Getting Started on Mac OS
+# 2. Getting Started on Mac OS
     1. Create a CMake folder `mkdir cmake && cd cmake`
     2. Generate the build files `cmake -G "Ninja" ..`
     3. Run the program from the terminal `./Universe` 
        (OSX Catalina requires security exceptions for terminal to allow SFML to run)
 
-# 3.Getting Started on Linux
+# 3. Getting Started on Linux
     TBD
 
-# 4.Getting Started on Windows
+# 4. Getting Started on Windows
     TBD
 
-# 5.Automatic Formatting
+# 5. Automatic Formatting
     TBD
