@@ -2,8 +2,6 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-using namespace sf;
-
 class Universe;
 class Celestial_Body;
 class Planet;
@@ -31,8 +29,8 @@ public:
 	Celestial_Body* get_body(int n);						//retrieve pointer to n'th celestial entity
 	int get_list_size();									//retrieve int number of celestial bodies in this universe
 
-	void create_planet(float x, float y, float dx, float dy, float mass, float radius, Color body_color);		//create planet(circle) with various parameters
-	void create_asteroid(float x, float y, float dx, float dy, float mass, float radius, Color body_color);		//create asteroid(triangle) with various parameters
+	void create_planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);		//create planet(circle) with various parameters
+	void create_asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);		//create asteroid(triangle) with various parameters
 	void delete_body(int n);								//delete n'th celestial body
 
 	void update_universe();									//update all physics associated with the universe
@@ -48,18 +46,18 @@ protected:
 		dx, dy,												//XY Velocity
 		fx, fy,												//XY force, this value is cleared at the beginning of each calculation
 		mass, radius;										//mass and radius of planet/asteroid
-	Color body_color;									//colour of celestial entity
+	sf::Color body_color;									//colour of celestial entity
 	int polygon_sides;										//number of sides to sfml drawing app, 3 for asteroid, 20 for planet
 
 public:
 	Celestial_Body();										//default constructor
-	Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, Color body_color);		//create a celestial body with various parameters
+	Celestial_Body(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);		//create a celestial body with various parameters
 
 	void change_position(float x, float y);					//change position of celestial body
 	void change_velocity(float x, float y);					//change velocity of celestial body
 	void change_mass(float mass);							//change mass of celestial body
 	void change_radius(float radius);						//change radius of celestial body
-	void change_color(Color planetColor);				//change colour of celestial body
+	void change_color(sf::Color planetColor);				//change colour of celestial body
 	void change_polygon_sides(int n);						//change number of sides of object
 
 	float get_position_x()const;							//retrieve x coordinate of celestial body
@@ -68,7 +66,7 @@ public:
 	float get_velocity_y()const;							//get y velocity of celestial body
 	float get_mass()const;									//get mass of celestial body
 	float get_radius()const;								//get radius of celestial body
-	Color get_color()const;								//get color of celestial body
+	sf::Color get_color()const;								//get color of celestial body
 	int get_polygon_sides()const;
 
 	void clear_force();										//empty the force values of a celestial body, this must be done at the beginning of each iteration
@@ -82,11 +80,11 @@ public:
 class Planet : public Celestial_Body {
 public:
 	Planet();												//default constructor
-	Planet(float x, float y, float dx, float dy, float mass, float radius, Color body_color);				//create 30 side planet with various parameters
+	Planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);				//create 30 side planet with various parameters
 };
 
 class Asteroid : public Celestial_Body {
 public:
 	Asteroid();												//default constructor
-	Asteroid(float x, float y, float dx, float dy, float mass, float radius, Color body_color);				//create a 3 side asteroid with various parameters
+	Asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color body_color);				//create a 3 side asteroid with various parameters
 };
