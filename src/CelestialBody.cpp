@@ -1,4 +1,4 @@
-#include "../include/CelestialBody.h"
+#include "include/CelestialBody.h"
 #include <cmath>
 
 using namespace sf;

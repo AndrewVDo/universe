@@ -15,8 +15,6 @@ public:
   Universe(float w, float h);
   ~Universe();
 
-  void change_dimension(float width=600.0, float height=400.0);
-
   void create_planet(float x, float y, float dx, float dy, float mass, float radius,sf::Color bodyColor);
   void create_asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color bodyColor);
   void delete_body(int n);      

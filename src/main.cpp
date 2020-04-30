@@ -1,4 +1,4 @@
-#include "../include/universe.h"
+#include "include/universe.h"
 #include <SFML/Window.hpp>
 #include <cstdlib>
 #include <iomanip>

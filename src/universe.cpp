@@ -3,8 +3,8 @@
         Author: Andrew Do
         Date: March 16th 2018
 */
-#include "../include/universe.h"
-#include "../include/CelestialBody.h"
+#include "include/universe.h"
+#include "include/CelestialBody.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <cmath>
