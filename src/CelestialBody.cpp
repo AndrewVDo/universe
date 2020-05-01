@@ -1,5 +1,6 @@
 #include "include/CelestialBody.h"
 #include <cmath>
+#include <memory>
 
 using namespace sf;
 using namespace std;
@@ -12,7 +13,7 @@ CelestialBody::CelestialBody(float x, float y, float dx, float dy, float mass,
   this->mass = mass;
   this->radius = radius;
   this->bodyColor = bodyColor;
-  this->polySides = 4;
+  this->polySides = 30;
 }
 
 void CelestialBody::clear_force() {
@@ -21,21 +22,21 @@ void CelestialBody::clear_force() {
   return;
 }
 
-CelestialBody *CelestialBody::update_force(CelestialBody *neighbor) {
-  float x_distance = this->pos.first - neighbor->pos.first;
-  float y_distance = this->pos.second - neighbor->pos.second;
+bool CelestialBody::update_force(CelestialBody &neighbor) {
+  float x_distance = this->pos.first - neighbor.pos.first;
+  float y_distance = this->pos.second - neighbor.pos.second;
   float distance_squared = x_distance * x_distance + y_distance * y_distance;
 
-  if (sqrt(distance_squared) < (this->radius + neighbor->radius)) {
-    return neighbor;
+  if (sqrt(distance_squared) < (this->radius + neighbor.radius)) {
+    return true;
   }
   float direction = atan2f(y_distance, x_distance);
-  float force = -6.67 * pow(10, -11) * this->mass * neighbor->mass / distance_squared;
+  float force = -6.67 * pow(10, -11) * this->mass * neighbor.mass / distance_squared;
   this->force.first += cos(direction) * force;
   this->force.second += sin(direction) * force;
-  neighbor->force.first += cos(direction + 3.14159265359) * force;
-  neighbor->force.second += sin(direction + 3.14159265359) * force;
-  return NULL;
+  neighbor.force.first += cos(direction + 3.14159265359) * force;
+  neighbor.force.second += sin(direction + 3.14159265359) * force;
+  return false;
 }
 
 void CelestialBody::update_velocity() {
@@ -50,12 +51,12 @@ void CelestialBody::update_position() {
   return;
 }
 
-void CelestialBody::make_orbit(CelestialBody *p, bool clockwise) {
-  float x_distance = this->pos.first - p->pos.first;
-  float y_distance = this->pos.second - p->pos.second;
+void CelestialBody::make_orbit(CelestialBody &p, bool clockwise) {
+  float x_distance = this->pos.first - p.pos.first;
+  float y_distance = this->pos.second - p.pos.second;
   float distance_squared = x_distance * x_distance + y_distance * y_distance;
 
-  double velocity = sqrt(abs(-6.67 * pow(10, -11) * p->mass / sqrt(distance_squared)));
+  double velocity = sqrt(abs(-6.67 * pow(10, -11) * p.mass / sqrt(distance_squared)));
   float direction = atan2f(y_distance, x_distance);
 
   this->vel.first = abs(sin(direction) * velocity);
@@ -86,16 +87,4 @@ void CelestialBody::make_orbit(CelestialBody *p, bool clockwise) {
   }
 
   return;
-}
-
-Planet::Planet() : CelestialBody(0, 0, 0, 0, 1, 1, Color::White) {}
-Planet::Planet(float x, float y, float dx, float dy, float mass, float radius, Color bodyColor)
-    : CelestialBody(x, y, dx, dy, mass, radius, bodyColor) {
-  this->polySides = 30;
-}
-
-Asteroid::Asteroid() : CelestialBody(0, 0, 0, 0, 1, 1, Color::White) {}
-Asteroid::Asteroid(float x, float y, float dx, float dy, float mass, float radius, Color bodyColor)
-    : CelestialBody(x, y, dx, dy, mass, radius, bodyColor) {
-  this->polySides = 3;
 }
