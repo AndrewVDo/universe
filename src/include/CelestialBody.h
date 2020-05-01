@@ -34,15 +34,3 @@ struct CelestialBody {
     bool clockwise
   ); 
 };
-
-class Planet : public CelestialBody {
-public:
-  Planet();
-  Planet(float x, float y, float dx, float dy, float mass, float radius, sf::Color bodyColor); 
-};
-
-class Asteroid : public CelestialBody {
-public:
-  Asteroid();
-  Asteroid(float x, float y, float dx, float dy, float mass, float radius, sf::Color bodyColor); 
-};
